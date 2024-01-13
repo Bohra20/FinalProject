@@ -1,26 +1,42 @@
+// src/App.tsx
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from './app/store';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
+import DashboardPage from './pages/DashboardPage';
+import { AuthProvider } from './services/authProvider';
 
-function App() {
+const App: React.FC = () => {
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+    <Router>
+      <Routes>
+        <Route path="/signin" element={<SignInPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/dashboard" element={<DashboardPage />}  />
+        <Route path="*" element={<Navigate to="/signin" />} />
+      </Routes>
+    </Router>
+    </AuthProvider>
   );
-}
+};
+
+// interface PrivateRouteProps {
+//   path: string;
+//   element: React.ReactNode;
+//   isAuthenticated: boolean;
+// }
+
+// const PrivateRoute: React.FC<PrivateRouteProps> = ({ element, isAuthenticated }) => {
+//   return isAuthenticated ? (
+//     <React.Fragment>{element}</React.Fragment>
+//   ) : (
+//     <Navigate to="/signin" replace={true} />
+//   );
+// };
 
 export default App;
