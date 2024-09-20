@@ -1,6 +1,3 @@
-
-
-
 // SignIn.tsx
 import React, { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
@@ -19,17 +16,6 @@ import {
 } from "@material-ui/core";
 import { authService } from "../services/authServices";
 import { useAuth } from "../services/useAuth";
-// import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-
-const MadeWithLove = () => (
-  <Typography variant="body2" color="textSecondary" align="center">
-    {"Built with love by the "}
-    <RouterLink color="inherit" to="https://material-ui.com/">
-      Material-UI
-    </RouterLink>
-    {" team."}
-  </Typography>
-);
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,17 +23,32 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    backgroundColor: '#fff',
+    padding: theme.spacing(4),
+    borderRadius: '8px',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    backgroundColor: theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.dark,
+    },
+  },
+  link: {
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
 }));
 
@@ -55,15 +56,12 @@ const SignIn = () => {
   const classes = useStyles();
   const [formData, setFormData] = useState({ email: "eve.holt@reqres.in", password: "" });
   const navigate = useNavigate();
-  const {  login } = useAuth();
+  const { login } = useAuth();
 
   const handleSignIn = async () => {
-    // Handle Sign In logic
-        try {
-      // Call the API for user authentication
+    try {
       const response = await authService.signIn(formData);
       console.log('User authenticated:', response.data);
-      // Assuming you want to redirect to '/dashboard' on successful login
       navigate('/dashboard');
       login();
     } catch (error) {
@@ -76,10 +74,10 @@ const SignIn = () => {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          {/* <LockOutlinedIcon /> */}
+          {/* Optionally add an icon here */}
         </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
+        <Typography component="h1" variant="h4" style={{ fontWeight: 600 }}>
+          Sign In
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
@@ -116,20 +114,19 @@ const SignIn = () => {
             type="button"
             fullWidth
             variant="contained"
-            color="primary"
             className={classes.submit}
             onClick={handleSignIn}
           >
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
+            {/* <Grid item xs>
+              <Link href="#" variant="body2" className={classes.link}>
                 Forgot password?
               </Link>
-            </Grid>
+            </Grid> */}
             <Grid item>
-              <Link component={RouterLink} to="/signup" variant="body2">
+              <Link component={RouterLink} to="/signup" variant="body2" className={classes.link}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
